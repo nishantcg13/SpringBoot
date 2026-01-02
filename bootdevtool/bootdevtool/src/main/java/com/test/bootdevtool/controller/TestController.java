@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestController {
     @RequestMapping("/test")
     public String test(){
-        return "HEllo mY NAME IS NISHANTSSSS SANIKA";
+        return "HEllo mY NAME IS NISHsssssssssssANTSSSS SANIKA";
     }
 }
