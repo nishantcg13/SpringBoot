@@ -4,7 +4,9 @@ import com.rest.bootrestbook.entity.Book;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookService {
@@ -32,14 +34,13 @@ public class BookService {
     public List<Book> getAllBooks(){
         return list;
     }
-
-    public Book getBookById(int id){
+   public Optional<Book> getBookById(int id){
         for(Book book : list){
             if(book.getId() == id){
-                return book;
+                return Optional.of(book);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public String createBook(Book b){
@@ -47,4 +48,29 @@ public class BookService {
         return b.toString()+"added successfully";
     }
 
+    public Optional<Book> deleteBook(int id) {
+
+        Iterator<Book> itr = list.iterator();
+
+        while(itr.hasNext()){
+            Book b = itr.next();
+            if(b.getId() == id){
+                itr.remove();
+                return Optional.of(b);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public void updateBook(int id , Book book){
+        Iterator<Book> itr = list.iterator();
+        while(itr.hasNext()){
+            Book newBook = itr.next();
+            if(newBook.getId() == id){
+                newBook.setTitle(book.getTitle());
+                newBook.setAuthor(book.getAuthor());
+                return;
+            }
+        }
+    }
 }

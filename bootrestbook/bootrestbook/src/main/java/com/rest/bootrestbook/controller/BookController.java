@@ -3,10 +3,14 @@ package com.rest.bootrestbook.controller;
 import com.rest.bootrestbook.entity.Book;
 import com.rest.bootrestbook.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.logging.Handler;
 
 @RestController
 public class BookController {
@@ -16,13 +20,16 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping("/books")
-    public List<Book> getBooks(){
-        return bookService.getAllBooks();
+    public ResponseEntity<List<Book>> getBooks(){
+        List<Book> list = bookService.getAllBooks();
+        return ResponseEntity.ok(list);
+        // return ResponseEntity.ok(bookService.getAllBooks());  also a good coding practice
     }
 
-    @GetMapping("/bookid/{id}")
-    public Book getBookById(@PathVariable("id") int id){
-        return bookService.getBookById(id);
+    @GetMapping("/books/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable("id") int id){
+        return ResponseEntity.of(bookService.getBookById(id));
+        // here we have 2 methods
     }
 
     // here we are making the same methods but the mapping is changed so remember that
@@ -31,4 +38,22 @@ public class BookController {
         String str = bookService.createBook(book);
         return str;
     }
+
+    @DeleteMapping("/books/{id}")
+    public ResponseEntity<Book> delete(@PathVariable("id") int id){
+        Optional<Book> deletedBook = bookService.deleteBook(id);
+        if(deletedBook.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @PutMapping("/books/{id}")
+    public Book update(@PathVariable("id") int id,@RequestBody Book book){
+        bookService.updateBook(id,book);
+        return book;
+    }
+
+
 }
