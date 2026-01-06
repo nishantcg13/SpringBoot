@@ -42,4 +42,9 @@ public class BookService {
         return null;
     }
 
+    public String createBook(Book b){
+        list.add(b);
+        return b.toString()+"added successfully";
+    }
+
 }
