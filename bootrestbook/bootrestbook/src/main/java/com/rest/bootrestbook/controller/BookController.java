@@ -3,14 +3,12 @@ package com.rest.bootrestbook.controller;
 import com.rest.bootrestbook.entity.Book;
 import com.rest.bootrestbook.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
-import java.util.logging.Handler;
 
 @RestController
 public class BookController {
@@ -40,7 +38,7 @@ public class BookController {
     }
 
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Book> delete(@PathVariable("id") int id){
+    public ResponseEntity<Void> delete(@PathVariable("id") int id){
         Optional<Book> deletedBook = bookService.deleteBook(id);
         if(deletedBook.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -50,9 +48,8 @@ public class BookController {
     }
 
     @PutMapping("/books/{id}")
-    public Book update(@PathVariable("id") int id,@RequestBody Book book){
-        bookService.updateBook(id,book);
-        return book;
+    public ResponseEntity<Book> update(@PathVariable("id") int id,@RequestBody Book book){
+        return ResponseEntity.of(bookService.updateBook(id,book));
     }
 
 

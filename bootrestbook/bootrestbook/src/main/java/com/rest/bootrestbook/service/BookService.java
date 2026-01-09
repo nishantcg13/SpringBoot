@@ -62,15 +62,16 @@ public class BookService {
         return Optional.empty();
     }
 
-    public void updateBook(int id , Book book){
+    public Optional<Book> updateBook(int id , Book book){
         Iterator<Book> itr = list.iterator();
         while(itr.hasNext()){
             Book newBook = itr.next();
             if(newBook.getId() == id){
                 newBook.setTitle(book.getTitle());
                 newBook.setAuthor(book.getAuthor());
-                return;
+                return Optional.of(newBook);
             }
         }
+        return Optional.empty();
     }
 }
