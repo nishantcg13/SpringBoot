@@ -1,7 +1,14 @@
 package com.rest.bootrestbook.entity;
 
+import jakarta.persistence.*;
+import org.hibernate.dialect.MySQLDialect;
+
+@Entity
+@Table(name = "books")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
     private String author;

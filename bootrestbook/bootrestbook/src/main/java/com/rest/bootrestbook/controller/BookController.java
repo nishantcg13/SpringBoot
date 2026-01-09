@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 
 @RestController
@@ -32,25 +32,21 @@ public class BookController {
 
     // here we are making the same methods but the mapping is changed so remember that
     @PostMapping("/books")
-    public String  addBook(@RequestBody Book book){
-        String str = bookService.createBook(book);
-        return str;
+    public Book  addBook(@RequestBody Book book){
+         return bookService.createBook(book);
     }
 
     @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") int id){
-        Optional<Book> deletedBook = bookService.deleteBook(id);
-        if(deletedBook.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }else{
-            return ResponseEntity.noContent().build();
-        }
+         if(bookService.deleteBook(id)){
+             ResponseEntity.noContent().build();  //204
+         }
+         return ResponseEntity.notFound().build();
     }
 
     @PutMapping("/books/{id}")
     public ResponseEntity<Book> update(@PathVariable("id") int id,@RequestBody Book book){
         return ResponseEntity.of(bookService.updateBook(id,book));
     }
-
 
 }
