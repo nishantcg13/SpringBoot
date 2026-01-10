@@ -3,12 +3,8 @@ package com.rest.bootrestbook.service;
 import com.rest.bootrestbook.entity.Book;
 import com.rest.bootrestbook.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,11 +55,21 @@ public class BookService {
     }
 
     public Optional<Book> updateBook(int id , Book book){
-        if(!bookRepository.existsById(id)){
+
+        Optional<Book> getBook = bookRepository.findById(id);
+
+        if(getBook.isEmpty()){
             return Optional.empty();
         }
-        book.setId(id);
-        return Optional.of(bookRepository.save(book));
 
+        Book extistingBook = getBook.get(); //convert it into book type
+
+        extistingBook.setId(id);
+
+        if(book.getAuthor() != null){
+            extistingBook.getAuthor().setName(book.getAuthor().getName());
+        }
+
+        return Optional.of(bookRepository.save(extistingBook));
     }
 }

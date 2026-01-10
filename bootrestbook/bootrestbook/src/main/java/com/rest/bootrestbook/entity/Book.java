@@ -1,7 +1,6 @@
 package com.rest.bootrestbook.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.dialect.MySQLDialect;
 
 @Entity
 @Table(name = "books")
@@ -11,13 +10,15 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String title;
-    private String author;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Author author;
 
    public Book(){
         super();
     }
 
-    public Book(int id ,String title , String author){
+    public Book(int id ,String title , Author author){
         this.id = id;
         this.title= title;
         this.author = author;
@@ -40,11 +41,11 @@ public class Book {
         this.title = title;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
