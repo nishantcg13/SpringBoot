@@ -1,5 +1,7 @@
 package com.rest.bootrestbook.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -9,8 +11,12 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int authorId;
+
     private String name;
 
+    @OneToOne(mappedBy = "author")
+    @JsonBackReference
+    private Book book;
 
     public Author(){
         super();
@@ -19,6 +25,14 @@ public class Author {
     public Author(int authorId, String name) {
         this.authorId = authorId;
         this.name = name;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public int getAuthorId() {
@@ -36,6 +50,5 @@ public class Author {
     public void setName(String name) {
         this.name = name;
     }
-
 
 }
