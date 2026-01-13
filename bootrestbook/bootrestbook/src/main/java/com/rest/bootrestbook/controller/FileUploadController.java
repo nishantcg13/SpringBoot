@@ -1,8 +1,6 @@
 package com.rest.bootrestbook.controller;
 
 import com.rest.bootrestbook.helper.FileUploadHelper;
-import jakarta.annotation.Nonnull;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
