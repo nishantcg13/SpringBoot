@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name= "student")
-public class RelationshipEntity {
+public class StudentEntity {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -12,32 +12,33 @@ public class RelationshipEntity {
 
     private String name;
 
-    private String bookName;
+    @OneToMany(cascade = CascadeType.ALL)
+    private BookEntity bookEntity;
 
-    public RelationshipEntity(){
+    public StudentEntity(){
         super();
     }
-    public RelationshipEntity(int id, String name, String bookName) {
+    public StudentEntity(int id, String name, BookEntity bookEntity) {
         this.id = id;
         this.name = name;
-        this.bookName = bookName;
+        this.bookEntity = bookEntity;
     }
 
     @Override
     public String toString() {
-        return "RelationshipEntity{" +
+        return "StudentEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", bookName='" + bookName + '\'' +
+                ", bookName='" + bookEntity + '\'' +
                 '}';
     }
 
-    public String getBookName() {
-        return bookName;
+    public BookEntity getBookName() {
+        return bookEntity;
     }
 
-    public void setBookName(String bookName) {
-        this.bookName = bookName;
+    public void setBookName(BookEntity bookEntity) {
+        this.bookEntity = bookEntity;
     }
 
     public String getName() {

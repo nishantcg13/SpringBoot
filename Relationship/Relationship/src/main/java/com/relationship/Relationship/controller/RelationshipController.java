@@ -1,9 +1,7 @@
 package com.relationship.Relationship.controller;
 
-import com.relationship.Relationship.entity.RelationshipEntity;
-import com.relationship.Relationship.repository.RelationshipRepository;
+import com.relationship.Relationship.entity.StudentEntity;
 import com.relationship.Relationship.service.RelationshipService;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +17,31 @@ public class RelationshipController {
     RelationshipService relationshipService;
 
     @GetMapping
-    public ResponseEntity<List<RelationshipEntity>> getAll(){
+    public ResponseEntity<List<StudentEntity>> getAll(){
         return ResponseEntity.ok(relationshipService.getAllStudents());
     }
 
     @PostMapping
-    public ResponseEntity add(@RequestBody RelationshipEntity student){
+    public ResponseEntity add(@RequestBody StudentEntity student){
         return ResponseEntity.ok(relationshipService.createStudent(student));
     }
 
-    @GetMapping("{/id}")
-    public ResponseEntity<RelationshipEntity> getById(@PathVariable  int id){
+    @GetMapping("/{id}")
+    public ResponseEntity<StudentEntity> getById(@PathVariable  int id){
         return ResponseEntity.of(relationshipService.getStudentById(id));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteById(@PathVariable int id){
+        if(relationshipService.deleteById(id)){
+            return ResponseEntity.noContent().build();
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentEntity> updateById(@PathVariable int id, @RequestBody StudentEntity studentEntity){
+        return ResponseEntity.of(relationshipService.updateById(id, studentEntity));
+    }
 }
