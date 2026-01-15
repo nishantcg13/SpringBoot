@@ -48,7 +48,7 @@ public class RelationshipService {
         getStudent.setId(id);
 
         getStudent.setName(studentEntity.getName());
-        getStudent.setBookName(studentEntity.getBookName());
+        getStudent.setBookEntity(studentEntity.getBookEntity());
 
         relationshipRepository.save(getStudent);
         return Optional.of(getStudent);

@@ -1,6 +1,9 @@
 package com.relationship.Relationship.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name= "student")
@@ -12,13 +15,14 @@ public class StudentEntity {
 
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private BookEntity bookEntity;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "studentEntity")
+    @JsonManagedReference
+    private List<BookEntity> bookEntity;
 
     public StudentEntity(){
         super();
     }
-    public StudentEntity(int id, String name, BookEntity bookEntity) {
+    public StudentEntity(int id, String name, List<BookEntity> bookEntity) {
         this.id = id;
         this.name = name;
         this.bookEntity = bookEntity;
@@ -29,15 +33,15 @@ public class StudentEntity {
         return "StudentEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", bookName='" + bookEntity + '\'' +
+                ", books='" + bookEntity + '\'' +
                 '}';
     }
 
-    public BookEntity getBookName() {
+    public List<BookEntity> getBookEntity() {
         return bookEntity;
     }
 
-    public void setBookName(BookEntity bookEntity) {
+    public void setBookEntity(List<BookEntity> bookEntity) {
         this.bookEntity = bookEntity;
     }
 

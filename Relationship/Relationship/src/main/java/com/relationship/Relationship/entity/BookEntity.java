@@ -1,7 +1,7 @@
 package com.relationship.Relationship.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -9,13 +9,28 @@ import java.time.LocalDate;
 @Table(name = "book")
 public class BookEntity {
 
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    @JsonBackReference
+    private StudentEntity studentEntity;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookId;
     private String bookName;
     private LocalDate carriedDate;
     private LocalDate returnDate;
 
-    BookEntity(){
+
+    public BookEntity(){
         super();
+    }
+
+    public BookEntity(int bookId, String bookName,LocalDate carriedDate,LocalDate returnDate) {
+        this.returnDate = returnDate;
+        this.carriedDate = carriedDate;
+        this.bookName = bookName;
+        this.bookId = bookId;
     }
 
     public int getBookId() {
