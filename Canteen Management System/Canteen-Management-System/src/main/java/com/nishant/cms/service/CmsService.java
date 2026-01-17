@@ -2,11 +2,18 @@ package com.nishant.cms.service;
 
 import com.nishant.cms.entity.OrderEntity;
 import com.nishant.cms.repository.CmsRepository;
+import com.nishant.cms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
+
+
+//Order/CmsService
+//→ manages orders
+//→ place order, update status, fetch orders
 
 @Service
 public class CmsService {
@@ -14,11 +21,19 @@ public class CmsService {
     @Autowired
     CmsRepository cmsRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     public String addOrder(OrderEntity orderEntity,long id) {
+
+        if(!userRepository.existsById(id)) {
+            return "User doesn't exist";
+        }
         orderEntity.setPlacedDateTime(LocalDateTime.now());
         orderEntity.setUserId(id);
         cmsRepository.save(orderEntity);
         return "Order placed successfully";
+
     }
 
     public Optional<OrderEntity> updateOrderStatus(long id, String status) {
@@ -39,6 +54,11 @@ public class CmsService {
         }
         return Optional.empty();
     }
+
+    public List<OrderEntity> getAllOrdersOfUser(long id){
+        return cmsRepository.findByUserId(id);
+    }
+
 
 
 }

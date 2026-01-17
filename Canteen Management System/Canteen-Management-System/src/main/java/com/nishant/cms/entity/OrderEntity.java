@@ -22,7 +22,7 @@ public class OrderEntity {
         super();
     }
 
-    public OrderEntity(long orderId , String orderMenu , String orderStatus, long userId,LocalDateTime placedDateTime , float totalAmount){
+    public OrderEntity(long orderId , long userId, String orderMenu , String orderStatus,LocalDateTime placedDateTime , float totalAmount){
         this.orderId = orderId;
         this.orderMenu = orderMenu;
         this.orderStatus = orderStatus;
@@ -51,7 +51,7 @@ public class OrderEntity {
         return userId;
     }
 
-    public void setUserId(long customerName) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

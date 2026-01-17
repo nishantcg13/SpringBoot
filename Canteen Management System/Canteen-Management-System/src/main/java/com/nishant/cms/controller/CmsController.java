@@ -1,11 +1,12 @@
 package com.nishant.cms.controller;
 
 import com.nishant.cms.entity.OrderEntity;
-import com.nishant.cms.entity.UserEntity;
 import com.nishant.cms.service.CmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -25,5 +26,15 @@ public class CmsController{
         return ResponseEntity.of(cmsService.updateOrderStatus(id,status));
     }
 
+    @GetMapping("/user/{userId}/orders")
+    public ResponseEntity<List<OrderEntity>> getAllOrders(@PathVariable("userId") long id){
+        List<OrderEntity> orders = cmsService.getAllOrdersOfUser(id);
+
+        if(orders.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(orders);
+    }
 
 }
