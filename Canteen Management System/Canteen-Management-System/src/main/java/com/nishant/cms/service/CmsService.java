@@ -39,7 +39,7 @@ public class CmsService {
     public Optional<OrderEntity> updateOrderStatus(long id, String status) {
 
         if(!userRepository.existsById(id)){
-             
+             return Optional.empty();
         }
         Optional<OrderEntity> getOrder = cmsRepository.findById(id);
 
@@ -58,8 +58,6 @@ public class CmsService {
         return Optional.empty();
     }
 
-    public List<OrderEntity> getAllOrdersOfUser(long id){
-        return cmsRepository.findByUserId(id);
-    }
+
 
 }

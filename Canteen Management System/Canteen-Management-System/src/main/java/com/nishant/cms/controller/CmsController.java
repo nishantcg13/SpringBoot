@@ -26,15 +26,5 @@ public class CmsController{
         return ResponseEntity.of(cmsService.updateOrderStatus(id,status));
     }
 
-    @GetMapping("/user/{userId}/orders")
-    public ResponseEntity<List<OrderEntity>> getAllOrders(@PathVariable("userId") long id){
-        List<OrderEntity> orders = cmsService.getAllOrdersOfUser(id);
-
-        if(orders.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-
-        return ResponseEntity.ok(orders);
-    }
 
 }

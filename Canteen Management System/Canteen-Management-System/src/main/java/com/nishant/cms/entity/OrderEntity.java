@@ -17,18 +17,21 @@ public class OrderEntity {
     private long userId;
     private LocalDateTime placedDateTime;
     private float totalAmount;
+    private long restaurantId;
+
 
     public OrderEntity(){
         super();
     }
 
-    public OrderEntity(long orderId , long userId, String orderMenu , String orderStatus,LocalDateTime placedDateTime , float totalAmount){
+    public OrderEntity(long orderId , long userId, String orderMenu , String orderStatus,LocalDateTime placedDateTime , float totalAmount , long restaurantId){
         this.orderId = orderId;
         this.orderMenu = orderMenu;
         this.orderStatus = orderStatus;
         this.userId = userId;
         this.placedDateTime = placedDateTime;
         this.totalAmount = totalAmount;
+        this.restaurantId = restaurantId;
     }
 
     public long getOrderId() {
@@ -78,6 +81,14 @@ public class OrderEntity {
     public void setTotalAmount(float totalAmount) {
         this.totalAmount = totalAmount;
     }
+    public long getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(long restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
 }
 
 
