@@ -3,7 +3,9 @@ package com.nishant.cms.service;
 import com.nishant.cms.entity.OrderEntity;
 import com.nishant.cms.repository.CmsRepository;
 import com.nishant.cms.repository.UserRepository;
+import org.hibernate.query.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -58,6 +60,21 @@ public class CmsService {
         return Optional.empty();
     }
 
+    public List<OrderEntity> getAllOrders(){
+        return cmsRepository.findAll();
+    }
 
+    public List<OrderEntity> getAllOrderByStatus(String status){
+        return cmsRepository.findByOrderStatus(status);
+    }
 
+    public Optional<List<OrderEntity>> getAllOrderByDay(LocalDateTime start , LocalDateTime end){
+        List<OrderEntity> list = cmsRepository.findByPlacedDateTimeBetween(start,end);
+
+        if(list.isEmpty()){
+            return Optional.empty();
+        }
+
+        return Optional.of(list);
+    }
 }
