@@ -6,9 +6,11 @@ import com.nishant.blog_app_apis.payloads.UserDto;
 import com.nishant.blog_app_apis.repositories.UserRepository;
 import com.nishant.blog_app_apis.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserServicesImpl implements UserService {
 
     @Autowired
@@ -34,22 +36,28 @@ public class UserServicesImpl implements UserService {
         user.setUserAbout(userDto.getUserAbout());
 
         User updatedUser = this.userRepository.save(user);
-        UserDto userDto1 = userToDto(updatedUser);
-        return userDto1;
+        return userToDto(updatedUser);
     }
 
     @Override
     public UserDto getUserById(Integer userId) {
-        return null;
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "userId" , userId));
+        return this.userToDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
-        return List.of();
+
+        List<User> users = this.userRepository.findAll();
+        List<UserDto> userDto = users.stream().map(user -> this.userToDto(user)).toList();
+        return userDto;
     }
 
     @Override
     public void deleteUser(Integer userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "userId" , userId));
+
+        userRepository.delete(user);
 
     }
 
@@ -60,7 +68,6 @@ public class UserServicesImpl implements UserService {
     private User dtoToUser(UserDto userDto){
         User user = new User();
 
-        user.setUserId(userDto.getUserId());
         user.setUserName(userDto.getUserName());
         user.setUserEmail(userDto.getUserEmail());
         user.setUserPassword(userDto.getUserPassword());
