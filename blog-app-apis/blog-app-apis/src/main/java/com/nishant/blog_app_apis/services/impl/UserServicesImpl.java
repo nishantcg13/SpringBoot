@@ -5,6 +5,7 @@ import com.nishant.blog_app_apis.exceptions.ResourceNotFoundException;
 import com.nishant.blog_app_apis.payloads.UserDto;
 import com.nishant.blog_app_apis.repositories.UserRepository;
 import com.nishant.blog_app_apis.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class UserServicesImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -66,24 +70,24 @@ public class UserServicesImpl implements UserService {
     // User by getting the fields in the UserDto
 
     private User dtoToUser(UserDto userDto){
-        User user = new User();
+        User user = this.modelMapper.map(userDto,User.class);
 
-        user.setUserName(userDto.getUserName());
-        user.setUserEmail(userDto.getUserEmail());
-        user.setUserPassword(userDto.getUserPassword());
-        user.setUserAbout(userDto.getUserAbout());
+//        user.setUserName(userDto.getUserName());
+//        user.setUserEmail(userDto.getUserEmail());
+//        user.setUserPassword(userDto.getUserPassword());
+//        user.setUserAbout(userDto.getUserAbout());
 
         return user;
     }
 
     private UserDto userToDto(User user){
-        UserDto userDto = new UserDto();
+        UserDto userDto = this.modelMapper.map(user,UserDto.class);
 
-        userDto.setUserId(user.getUserId());
-        userDto.setUserName(user.getUserName());
-        userDto.setUserEmail(user.getUserEmail());
-        userDto.setUserPassword(user.getUserPassword());
-        userDto.setUserAbout(user.getUserAbout());
+//        userDto.setUserId(user.getUserId());
+//        userDto.setUserName(user.getUserName());
+//        userDto.setUserEmail(user.getUserEmail());
+//        userDto.setUserPassword(user.getUserPassword());
+//        userDto.setUserAbout(user.getUserAbout());
 
         return userDto;
     }
