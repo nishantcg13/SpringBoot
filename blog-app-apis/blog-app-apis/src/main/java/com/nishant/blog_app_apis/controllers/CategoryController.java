@@ -22,29 +22,29 @@ public class CategoryController {
     @PostMapping("/")
     public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
         CategoryDto createdCategoryDto = this.categoryService.createCategory(categoryDto);
-        return new ResponseEntity<CategoryDto>(createdCategoryDto , HttpStatus.CREATED);
+        return new ResponseEntity<CategoryDto>(createdCategoryDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto , @PathVariable int categoryId){
-        CategoryDto updateCategory = this.categoryService.updateCategory(categoryDto,categoryId);
+    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable int categoryId) {
+        CategoryDto updateCategory = this.categoryService.updateCategory(categoryDto, categoryId);
         return ResponseEntity.ok(updateCategory);
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<?> deleteCategory(@PathVariable int categoryId){
+    public ResponseEntity<?> deleteCategory(@PathVariable int categoryId) {
         this.categoryService.deleteCategory(categoryId);
-        return new ResponseEntity<>(new ApiResponse("Category Deleted Successfully" , true),HttpStatus.OK);
+        return new ResponseEntity<>(new ApiResponse("Category Deleted Successfully", true), HttpStatus.OK);
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<CategoryDto>> getAllCategories(){
+    public ResponseEntity<List<CategoryDto>> getAllCategories() {
         List<CategoryDto> categoryDtos = this.categoryService.getAllCategories();
         return ResponseEntity.ok(categoryDtos);
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable int categoryId){
+    public ResponseEntity<CategoryDto> getCategoryById(@PathVariable int categoryId) {
         CategoryDto categoryDto = this.categoryService.getCategoryById(categoryId);
         return ResponseEntity.ok(categoryDto);
     }

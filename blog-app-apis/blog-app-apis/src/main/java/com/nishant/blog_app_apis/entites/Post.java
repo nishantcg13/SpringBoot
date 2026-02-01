@@ -25,6 +25,7 @@ public class Post {
 
     @ManyToOne
     //itha variable name tithe mappedBy madhe liha
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @ManyToOne
