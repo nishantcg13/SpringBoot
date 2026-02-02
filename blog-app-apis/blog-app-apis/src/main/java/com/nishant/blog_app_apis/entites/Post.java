@@ -2,11 +2,19 @@ package com.nishant.blog_app_apis.entites;
 
 import com.nishant.blog_app_apis.services.CategoryService;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "posts")
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
 
     @Id
