@@ -8,10 +8,12 @@ import com.nishant.blog_app_apis.services.CategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     @Autowired
@@ -52,6 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public CategoryDto getCategoryById(Integer categoryId) {
 
         Category category = this.categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category" , "CategoryId" , categoryId));
@@ -59,6 +62,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories() {
 
         List<Category> categories = this.categoryRepository.findAll();

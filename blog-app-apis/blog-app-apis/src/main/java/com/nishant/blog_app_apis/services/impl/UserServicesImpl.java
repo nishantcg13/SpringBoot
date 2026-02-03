@@ -8,10 +8,12 @@ import com.nishant.blog_app_apis.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class UserServicesImpl implements UserService {
 
     @Autowired
@@ -44,12 +46,14 @@ public class UserServicesImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUserById(Integer userId) {
         User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "userId" , userId));
         return this.userToDto(user);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
 
         List<User> users = this.userRepository.findAll();

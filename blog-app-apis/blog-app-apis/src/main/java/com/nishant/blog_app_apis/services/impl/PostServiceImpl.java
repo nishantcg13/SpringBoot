@@ -4,7 +4,9 @@ import com.nishant.blog_app_apis.entites.Category;
 import com.nishant.blog_app_apis.entites.Post;
 import com.nishant.blog_app_apis.entites.User;
 import com.nishant.blog_app_apis.exceptions.ResourceNotFoundException;
+import com.nishant.blog_app_apis.payloads.CategoryDto;
 import com.nishant.blog_app_apis.payloads.PostDto;
+import com.nishant.blog_app_apis.payloads.UserDto;
 import com.nishant.blog_app_apis.repositories.CategoryRepository;
 import com.nishant.blog_app_apis.repositories.PostRepository;
 import com.nishant.blog_app_apis.repositories.UserRepository;
@@ -12,11 +14,13 @@ import com.nishant.blog_app_apis.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class PostServiceImpl implements PostService {
 
     @Autowired
@@ -34,9 +38,9 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto createPost(PostDto postDto, Integer userId, Integer categoryId) {
 
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "UserId" , userId));
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "UserId", userId));
 
-        Category category = this.categoryRepository.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category","CategoryId",categoryId));
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
 
         Post post = this.dtoToPost(postDto);
         post.setPostImageName("default.png");
@@ -60,23 +64,39 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getAllPost() {
+    @Transactional(readOnly = true)
+    public List<PostDto> getAllPost() {
         return List.of();
     }
 
     @Override
-    public Post getPostById(Integer postId) {
+    @Transactional(readOnly = true)
+    public PostDto getPostById(Integer postId) {
         return null;
     }
 
     @Override
-    public List<Post> getPostByCategory(Integer categoryId) {
-        return List.of();
+    @Transactional(readOnly = true)
+    public List<PostDto> getPostByCategory(Integer categoryId) {
+        Category category = this.categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("Category", "CategoryId", categoryId));
+
+        List<Post> posts = this.postRepository.findByCategory(category);
+
+        List<PostDto> postDtos = posts.stream().map(post -> this.postToDto(post)).toList();
+        return postDtos;
     }
 
     @Override
-    public List<Post> getPostByUser(Integer userId) {
-        return List.of();
+    @Transactional(readOnly = true)
+    public List<PostDto> getPostByUser(Integer userId) {
+
+        User user = this.userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User" , "UserId" , userId));
+
+        List<Post> posts = this.postRepository.findByUser(user);
+
+        List<PostDto> postDtos = posts.stream().map(post -> this.postToDto(post)).toList();
+
+        return postDtos;
     }
 
 
@@ -88,6 +108,8 @@ public class PostServiceImpl implements PostService {
 
     private PostDto postToDto(Post post) {
         PostDto postDto = this.modelMapper.map(post, PostDto.class);
+        postDto.setUserDto(modelMapper.map(post.getUser(), UserDto.class));
+        postDto.setCategoryDto(modelMapper.map(post.getCategory(), CategoryDto.class));
         return postDto;
     }
 }
