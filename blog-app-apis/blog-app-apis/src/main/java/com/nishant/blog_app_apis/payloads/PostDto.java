@@ -15,22 +15,20 @@ import java.util.Date;
 @AllArgsConstructor
 public class PostDto {
 
-    @NotBlank
+    private Integer postId;
+
+    @NotBlank(message = "Post title cannot be blank")
     @Size(min = 5 , message = "Post Title should be min of 4 char")
     private String postTitle;
 
     @NotBlank(message = "Post Content should not be blank")
     private String postContent;
 
-    @NotBlank(message = "Please select at-least a image")
     private String postImageName;
 
-    @NotBlank
     private Date postAddedDate;
 
-    @NotBlank
     private CategoryDto categoryDto;
 
-    @NotBlank
     private UserDto userDto;
 }

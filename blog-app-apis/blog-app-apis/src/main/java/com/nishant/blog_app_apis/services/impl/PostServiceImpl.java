@@ -13,6 +13,9 @@ import com.nishant.blog_app_apis.repositories.UserRepository;
 import com.nishant.blog_app_apis.services.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,24 +58,42 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto updatePost(PostDto postDto, Integer postId) {
-        return null;
+        Post post = this.postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","PostId",postId));
+
+        post.setPostTitle(postDto.getPostTitle());
+        post.setPostContent(postDto.getPostContent());
+        post.setPostImageName(postDto.getPostImageName());
+
+        Post savedPost = this.postRepository.save(post);
+        PostDto savedPostDto = this.postToDto(savedPost);
+        return savedPostDto;
     }
 
     @Override
     public void deletePost(Integer postId) {
+        Post post = this.postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","PostId",postId));
 
+        this.postRepository.delete(post);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<PostDto> getAllPost() {
-        return List.of();
+    public List<PostDto> getAllPost(Integer pageNumber , Integer pageSize) {
+
+        Pageable page = PageRequest.of(pageNumber,pageSize);
+        Page<Post> pagePosts= this.postRepository.findAll(page);
+
+        List<Post> posts = pagePosts.getContent();
+        List<PostDto> postDtos = posts.stream().map(post->this.postToDto(post)).toList();
+        return postDtos;
     }
 
     @Override
     @Transactional(readOnly = true)
     public PostDto getPostById(Integer postId) {
-        return null;
+        Post post = postRepository.findById(postId).orElseThrow(()-> new ResourceNotFoundException("Post","PostId",postId));
+        PostDto postDto = this.postToDto(post);
+        return postDto;
     }
 
     @Override
