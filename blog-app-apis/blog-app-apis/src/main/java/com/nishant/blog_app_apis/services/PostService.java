@@ -1,7 +1,7 @@
 package com.nishant.blog_app_apis.services;
 
-import com.nishant.blog_app_apis.entites.Post;
 import com.nishant.blog_app_apis.payloads.PostDto;
+import com.nishant.blog_app_apis.payloads.PostResponse;
 
 import java.util.List;
 
@@ -17,14 +17,16 @@ public interface PostService {
     void deletePost(Integer postId);
 
     //getAll
-    List<PostDto> getAllPost(Integer pageNumber , Integer pageSize);
+    PostResponse getAllPost(Integer pageNumber , Integer pageSize , String sortBy , String sortDirection);
 
     //getSinglePost
     PostDto getPostById(Integer postId);
 
     // getAllPostsByCategory
-    List<PostDto> getPostByCategory(Integer categoryId);
+    PostResponse getPostByCategory(Integer categoryId,Integer pageNumber , Integer pageSize);
 
     // getAllPostByUser
-    List<PostDto> getPostByUser(Integer userId);
+    PostResponse getPostByUser(Integer userId, Integer pageNumber , Integer pageSize);
+
+    List<PostDto> searchPost(String keyword);
 }
