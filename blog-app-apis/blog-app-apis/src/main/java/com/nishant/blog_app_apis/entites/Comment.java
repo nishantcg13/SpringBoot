@@ -22,4 +22,8 @@ public class Comment {
 
     @ManyToOne
     private Post post;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

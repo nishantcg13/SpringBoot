@@ -17,4 +17,7 @@ public class CommentDto {
 
     @NotBlank(message = "comment should be not blank")
     private String content;
+
+    private int userId;
+    private String username;
 }

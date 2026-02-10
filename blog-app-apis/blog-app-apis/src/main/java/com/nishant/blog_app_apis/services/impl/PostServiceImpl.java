@@ -1,13 +1,11 @@
 package com.nishant.blog_app_apis.services.impl;
 
 import com.nishant.blog_app_apis.entites.Category;
+import com.nishant.blog_app_apis.entites.Comment;
 import com.nishant.blog_app_apis.entites.Post;
 import com.nishant.blog_app_apis.entites.User;
 import com.nishant.blog_app_apis.exceptions.ResourceNotFoundException;
-import com.nishant.blog_app_apis.payloads.CategoryDto;
-import com.nishant.blog_app_apis.payloads.PostDto;
-import com.nishant.blog_app_apis.payloads.PostResponse;
-import com.nishant.blog_app_apis.payloads.UserDto;
+import com.nishant.blog_app_apis.payloads.*;
 import com.nishant.blog_app_apis.repositories.CategoryRepository;
 import com.nishant.blog_app_apis.repositories.PostRepository;
 import com.nishant.blog_app_apis.repositories.UserRepository;
@@ -180,6 +178,27 @@ public class PostServiceImpl implements PostService {
         PostDto postDto = this.modelMapper.map(post, PostDto.class);
         postDto.setUserDto(modelMapper.map(post.getUser(), UserDto.class));
         postDto.setCategoryDto(modelMapper.map(post.getCategory(), CategoryDto.class));
+        if (post.getComments() != null) {
+            postDto.setComments(
+                    post.getComments()
+                            .stream()
+                            .map(this::commentToDto)   // IMPORTANT
+                            .toList()
+            );
+        }
         return postDto;
     }
+
+    private CommentDto commentToDto(Comment comment) {
+
+        CommentDto dto = this.modelMapper.map(comment, CommentDto.class);
+
+        if (comment.getUser() != null) {
+            dto.setUserId(comment.getUser().getUserId());
+            dto.setUsername(comment.getUser().getUserName());
+        }
+
+        return dto;
+    }
+
 }
