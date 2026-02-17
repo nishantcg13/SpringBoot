@@ -1,7 +1,10 @@
 package com.nishant.blog_app_apis.payloads;
 
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +17,7 @@ public class UserDto {
     private int userId;
 
     @NotBlank
-    @Size(min =3, max = 15, message = "Username must be min of 4 characters")
+    @Size(min = 3, max = 15, message = "Username must be min of 4 characters")
     private String userName;
 
     @Email(message = "Please enter a valid email")
@@ -29,5 +32,11 @@ public class UserDto {
 
     @NotBlank(message = "About must not be empty")
     private String userAbout;
+    
+    private boolean enabled;
+    private boolean accountNonLocked;
+    private boolean accountNonExpired;
+    private boolean credentialsNonExpired;
+
 
 }

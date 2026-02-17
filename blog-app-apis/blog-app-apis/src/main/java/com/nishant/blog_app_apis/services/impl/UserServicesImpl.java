@@ -7,6 +7,7 @@ import com.nishant.blog_app_apis.repositories.UserRepository;
 import com.nishant.blog_app_apis.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +23,14 @@ public class UserServicesImpl implements UserService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public UserDto createUser(UserDto userDto) {
 
         User user = this.dtoToUser(userDto);
+        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
         User savedUser = this.userRepository.save(user);
 
         return this.userToDto(savedUser);
@@ -34,10 +39,10 @@ public class UserServicesImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, Integer userId) {
         // Exception(resourceName , fieldName , fieldValue)
-        User user = this.userRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User" , "userId", userId ));
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
-        user.setUserName(userDto.getUserName());
-        user.setUserEmail(userDto.getUserEmail());
+        user.setName(userDto.getUserName());
+        user.setEmail(userDto.getUserEmail());
         user.setUserPassword(userDto.getUserPassword());
         user.setUserAbout(userDto.getUserAbout());
 
@@ -48,7 +53,7 @@ public class UserServicesImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto getUserById(Integer userId) {
-        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "userId" , userId));
+        User user = this.userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
         return this.userToDto(user);
     }
 
@@ -63,7 +68,7 @@ public class UserServicesImpl implements UserService {
 
     @Override
     public void deleteUser(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User" , "userId" , userId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
 
         userRepository.delete(user);
 
@@ -73,23 +78,23 @@ public class UserServicesImpl implements UserService {
     // but here we are using UserDto so we will need to change the object means set the fields in the
     // User by getting the fields in the UserDto
 
-    private User dtoToUser(UserDto userDto){
-        User user = this.modelMapper.map(userDto,User.class);
+    private User dtoToUser(UserDto userDto) {
+        User user = this.modelMapper.map(userDto, User.class);
 
 //        user.setUserName(userDto.getUserName());
-//        user.setUserEmail(userDto.getUserEmail());
+//        user.setEmail(userDto.getEmail());
 //        user.setUserPassword(userDto.getUserPassword());
 //        user.setUserAbout(userDto.getUserAbout());
 
         return user;
     }
 
-    private UserDto userToDto(User user){
-        UserDto userDto = this.modelMapper.map(user,UserDto.class);
+    private UserDto userToDto(User user) {
+        UserDto userDto = this.modelMapper.map(user, UserDto.class);
 
 //        userDto.setUserId(user.getUserId());
 //        userDto.setUserName(user.getUserName());
-//        userDto.setUserEmail(user.getUserEmail());
+//        userDto.setEmail(user.getEmail());
 //        userDto.setUserPassword(user.getUserPassword());
 //        userDto.setUserAbout(user.getUserAbout());
 
