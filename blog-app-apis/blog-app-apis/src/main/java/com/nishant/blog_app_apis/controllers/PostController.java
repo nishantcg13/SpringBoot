@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -63,6 +64,7 @@ public class PostController {
     }
 
     //get All post
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @GetMapping("/post")
     public ResponseEntity<PostResponse> getAllPosts(@RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                     @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
@@ -115,11 +117,11 @@ public class PostController {
     //method to serve files
     @GetMapping(value = "post/image/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
     public void downloadImage(
-            @PathVariable String imageName , HttpServletResponse response)throws IOException{
+            @PathVariable String imageName, HttpServletResponse response) throws IOException {
 
         InputStream resource = this.fileService.getResource(path, imageName);
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
-        StreamUtils.copy(resource,response.getOutputStream());
+        StreamUtils.copy(resource, response.getOutputStream());
     }
 
 }

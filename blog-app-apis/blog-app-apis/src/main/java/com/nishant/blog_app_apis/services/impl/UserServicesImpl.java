@@ -1,8 +1,10 @@
 package com.nishant.blog_app_apis.services.impl;
 
+import com.nishant.blog_app_apis.entites.Role;
 import com.nishant.blog_app_apis.entites.User;
 import com.nishant.blog_app_apis.exceptions.ResourceNotFoundException;
 import com.nishant.blog_app_apis.payloads.UserDto;
+import com.nishant.blog_app_apis.repositories.RoleRepository;
 import com.nishant.blog_app_apis.repositories.UserRepository;
 import com.nishant.blog_app_apis.services.UserService;
 import org.modelmapper.ModelMapper;
@@ -26,11 +28,22 @@ public class UserServicesImpl implements UserService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     @Override
     public UserDto createUser(UserDto userDto) {
 
         User user = this.dtoToUser(userDto);
+
+        //encode password
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+
+        // Assign ROLE_USER automatically
+        Role role = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new RuntimeException("Default role not found"));
+
+        user.getRoles().add(role);
         User savedUser = this.userRepository.save(user);
 
         return this.userToDto(savedUser);
