@@ -1,6 +1,5 @@
 package com.nishant.blog_app_apis.controllers;
 
-import com.nishant.blog_app_apis.entites.Category;
 import com.nishant.blog_app_apis.payloads.ApiResponse;
 import com.nishant.blog_app_apis.payloads.CategoryDto;
 import com.nishant.blog_app_apis.services.CategoryService;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/category")
+@RequestMapping("api/v1/category")
 public class CategoryController {
 
     @Autowired

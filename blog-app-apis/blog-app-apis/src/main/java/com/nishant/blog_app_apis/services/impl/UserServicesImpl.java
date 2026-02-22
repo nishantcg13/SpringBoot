@@ -32,6 +32,16 @@ public class UserServicesImpl implements UserService {
     RoleRepository roleRepository;
 
     @Override
+    public UserDto registerNewUser(UserDto userDto) {
+
+        User user = this.dtoToUser(userDto);
+
+        user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
+
+        return null;
+    }
+
+    @Override
     public UserDto createUser(UserDto userDto) {
 
         User user = this.dtoToUser(userDto);

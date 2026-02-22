@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/")
+@RequestMapping("/api/v1")
 public class PostController {
 
 
@@ -55,7 +55,7 @@ public class PostController {
     }
 
     //get by category
-    @GetMapping("category/{categoryId}/posts")
+    @GetMapping("/category/{categoryId}/posts")
     public ResponseEntity<PostResponse> getPostByCategory(@PathVariable Integer categoryId,
                                                           @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
                                                           @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize) {
@@ -89,7 +89,7 @@ public class PostController {
     }
 
     // update post
-    @PutMapping("post/{postId}")
+    @PutMapping("/post/{postId}")
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable Integer postId) {
         PostDto updatePost = this.postService.updatePost(postDto, postId);
         return new ResponseEntity<>(updatePost, HttpStatus.OK);
@@ -115,7 +115,7 @@ public class PostController {
     }
 
     //method to serve files
-    @GetMapping(value = "post/image/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/post/image/{imageName}", produces = MediaType.IMAGE_PNG_VALUE)
     public void downloadImage(
             @PathVariable String imageName, HttpServletResponse response) throws IOException {
 
