@@ -1,5 +1,6 @@
 package com.nishant.blog_app_apis.services.impl;
 
+import com.nishant.blog_app_apis.config.AppConstants;
 import com.nishant.blog_app_apis.entites.Role;
 import com.nishant.blog_app_apis.entites.User;
 import com.nishant.blog_app_apis.exceptions.ResourceNotFoundException;
@@ -36,9 +37,15 @@ public class UserServicesImpl implements UserService {
 
         User user = this.dtoToUser(userDto);
 
+        //encode the password
         user.setUserPassword(passwordEncoder.encode(user.getUserPassword()));
 
-        return null;
+        // role
+        Role role = this.roleRepository.findById(AppConstants.ROLE_ADMIN).get();
+        user.getRoles().add(role);
+
+        User newUser = this.userRepository.save(user);
+        return this.userToDto(newUser);
     }
 
     @Override

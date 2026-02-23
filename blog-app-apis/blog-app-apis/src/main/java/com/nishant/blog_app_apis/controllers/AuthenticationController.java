@@ -3,7 +3,9 @@ package com.nishant.blog_app_apis.controllers;
 
 import com.nishant.blog_app_apis.entites.JwtRequest;
 import com.nishant.blog_app_apis.entites.JwtResponse;
+import com.nishant.blog_app_apis.payloads.UserDto;
 import com.nishant.blog_app_apis.security.JwtHelper;
+import com.nishant.blog_app_apis.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authManager;
+
+    @Autowired
+    private UserService userService;
 
 
     @Autowired
@@ -59,6 +64,17 @@ public class AuthenticationController {
         }
 
     }
+
+    // register new user api
+
+    @PostMapping("/register")
+    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
+
+        UserDto registeredUser = this.userService.registerNewUser(userDto);
+        return new ResponseEntity<UserDto>(registeredUser, HttpStatus.CREATED);
+
+    }
+
 
     @ExceptionHandler(BadCredentialsException.class)
     public String exceptionHandler() {
