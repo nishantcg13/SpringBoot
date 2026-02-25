@@ -1,10 +1,10 @@
-package com.nishant.emailotp;
+package com.nishant.email_sender;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmailOtpSenderApplicationTests {
+class EmailSenderApplicationTests {
 
 	@Test
 	void contextLoads() {

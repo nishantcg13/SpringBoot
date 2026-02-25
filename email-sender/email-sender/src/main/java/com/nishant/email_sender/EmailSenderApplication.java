@@ -1,13 +1,13 @@
-package com.nishant.emailotp;
+package com.nishant.email_sender;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class EmailOtpSenderApplication {
+public class EmailSenderApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(EmailOtpSenderApplication.class, args);
+		SpringApplication.run(EmailSenderApplication.class, args);
 	}
 
 }
