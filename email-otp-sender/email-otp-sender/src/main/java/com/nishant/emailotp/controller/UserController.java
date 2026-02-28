@@ -1,5 +1,6 @@
 package com.nishant.emailotp.controller;
 
+import com.nishant.emailotp.dto.LoginDto;
 import com.nishant.emailotp.dto.RegisterDto;
 import com.nishant.emailotp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/v1")
+
 public class UserController {
 
     @Autowired
@@ -20,11 +21,18 @@ public class UserController {
         return new ResponseEntity<>(userService.register(registerDto), HttpStatus.OK);
     }
 
-    @PutMapping("/verifyAccount-account")
+    @PutMapping("/verify-account")
     public ResponseEntity<String> verify(@RequestParam String email,@RequestParam String otp){
         return new ResponseEntity<>(userService.verifyAccount(email,otp),HttpStatus.OK);
     }
 
+    @PutMapping("/regenerate-otp")
+    public ResponseEntity<String> regenerateOtp(@RequestParam String email){
+        return new ResponseEntity<>(userService.regenerateOtp(email),HttpStatus.OK);
+    }
 
-
+    @PutMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+        return new ResponseEntity<>(userService.login(loginDto),HttpStatus.OK);
+    }
 }

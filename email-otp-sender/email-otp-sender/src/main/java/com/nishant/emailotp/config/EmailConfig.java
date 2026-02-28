@@ -31,9 +31,13 @@ public class EmailConfig {
         javaMailSenderImpl.setPort(Integer.parseInt(mailPort));
         javaMailSenderImpl.setUsername(mailUsername);
         javaMailSenderImpl.setPassword(mailPassword);
+        System.out.println(mailUsername);
 
         Properties properties = javaMailSenderImpl.getJavaMailProperties();
+
         properties.put("mail.smtp.starttls.enable","true");
+
+
 
         return javaMailSenderImpl;
     }
